@@ -1,4 +1,26 @@
+import { Config } from "../../config";
 import { AuthResponse, ErrorResponse } from "../../data/data";
+
+enum Tokens {
+    Access = "access-token",
+    Refresh = "refresh-token",
+}
+
+function getAccessToken(): string | null {
+    return localStorage.getItem(Tokens.Access)
+}
+
+function removeAccessToken() {
+    localStorage.removeItem(Tokens.Access)
+}
+
+function getRefreshToken(): string | null {
+    return localStorage.getItem(Tokens.Refresh)
+}
+
+function removeRefreshToken() {
+    localStorage.removeItem(Tokens.Refresh)
+}
 
 async function signUp(
     login: string,
@@ -6,7 +28,7 @@ async function signUp(
     onError: (error: ErrorResponse) => void,
 ): Promise<AuthResponse | undefined> {
     const response: Response = await fetch(
-        'http://localhost:18080/auth/sign-up', {
+        Config.AuthUrl + "/auth/sign-up", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,7 +43,6 @@ async function signUp(
     }
 
     const data: AuthResponse = await response.json();
-    console.log(data)
 }
 
 async function signIn(email: string, password: string): Promise<AuthResponse> {
@@ -42,4 +63,4 @@ async function signIn(email: string, password: string): Promise<AuthResponse> {
     return data;
 }
 
-export { signIn, signUp }
+export { signIn, signUp, Tokens, getAccessToken, getRefreshToken, removeAccessToken, removeRefreshToken }

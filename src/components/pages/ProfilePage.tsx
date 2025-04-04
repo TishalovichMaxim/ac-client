@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { PageTypeContext } from "../../page-type-context"
-import { PageType } from "../../page-type"
 import Navbar from "../Navbar"
+import { logout } from "../../logic/pages/profile-page"
 
 function ProfilePage() {
   const [_, setPageType] = useContext(PageTypeContext)
@@ -12,7 +12,7 @@ function ProfilePage() {
       <h1>
         Profile
       </h1>
-      <button onClick={() => setPageType(PageType.SignIn)}>
+      <button onClick={() => logout(setPageType)}>
         Log out
       </button>
     </>

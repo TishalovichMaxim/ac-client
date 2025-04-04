@@ -1,9 +1,9 @@
-import { CONFIG } from "../../config";
+import { Config } from "../../config";
 
 let socket: WebSocket
 
 function onAppear() {
-    socket = new WebSocket(`ws://${CONFIG.SUBMISSIONS_URL}/test`);
+    socket = new WebSocket(`ws://${Config.SubmissionsUrl}/test`);
 
     socket.addEventListener("message", (event) => {
         console.log(`Retrieved from server: ${event.data}`)

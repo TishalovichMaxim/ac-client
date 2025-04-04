@@ -1,5 +1,7 @@
+import { Config } from "../../config";
 import { SetErrorMessage } from "../../errors";
 import { PageType, SetPageType } from "../../page-type";
+import { Tokens } from "../auth/auth";
 
 async function signIn(
     login: string,
@@ -8,7 +10,7 @@ async function signIn(
     setErrorMessage: SetErrorMessage
 ) {
     const response = await fetch(
-        'http://localhost:18080/auth/sign-up',
+        'http://' + Config.AuthUrl + '/auth/sign-in',
         {
             method: 'POST',
             headers: {
@@ -23,6 +25,12 @@ async function signIn(
         setErrorMessage(respBody.message)
         return
     }
+
+    const accessToken = respBody.accessToken
+    const refreshToken = respBody.accessToken
+
+    localStorage.setItem(Tokens.Access, accessToken)
+    localStorage.setItem(Tokens.Refresh, refreshToken)
 
     setPageType(PageType.ProblemsList)
 }

@@ -1,6 +1,8 @@
 import { AuthResponse } from "../../data/data";
 import { PageType, SetPageType } from "../../page-type";
 import { SetErrorMessage } from "../../errors";
+import { Config } from "../../config";
+import { Tokens } from "../auth/auth";
 
 async function signUp(
     login: string,
@@ -8,8 +10,8 @@ async function signUp(
     setPageType: SetPageType,
     setErrorMessage: SetErrorMessage
 ): Promise<AuthResponse | undefined> {
-    const response: Response = await fetch(
-        'http://localhost:18080/auth/sign-up',
+    const response = await fetch(
+        'http://' + Config.AuthUrl + '/auth/sign-up',
         {
             method: 'POST',
             headers: {
@@ -24,6 +26,12 @@ async function signUp(
         setErrorMessage(respBody.message)
         return
     }
+
+    const accessToken = respBody.accessToken
+    const refreshToken = respBody.accessToken
+
+    localStorage.setItem(Tokens.Access, accessToken)
+    localStorage.setItem(Tokens.Refresh, refreshToken)
 
     setPageType(PageType.ProblemsList)
 }

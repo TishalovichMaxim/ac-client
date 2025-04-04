@@ -1,18 +1,20 @@
 import { Problem } from "../../data/problem";
-import { SetPageType } from "../../page-type";
 import { SetErrorMessage } from "../../errors";
-import { CONFIG } from "../../config";
+import { Config } from "../../config";
 import { PagedResponse } from "../../data/network";
+import { Tokens } from "../auth/auth";
 
 async function getTasks(
-    setPageType: SetPageType,
     setErrorMessage: SetErrorMessage
 ): Promise<PagedResponse<Problem> | undefined> {
+    const accessToken: string = localStorage.getItem(Tokens.Access) ?? ""
+
     const response: Response = await fetch(
-        `http://${CONFIG.PROBLEMS_SERVER_URL}/problems`,
+        `http://${Config.ProblemsServerUrl}/problems`,
         {
             method: 'GET',
             headers: {
+                'WWW-Authenticate': 'Bearer ' + accessToken,
                 'Content-Type': 'application/json',
             },
         }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageTypeContext } from "./page-type-context"; 
 import { PageType } from "./page-type";
 import SignInPage from "./components/pages/SignInPage";
@@ -8,10 +8,20 @@ import { Problem } from "./data/problem";
 import { ChosenProblemContext } from "./chosen-problem-context";
 import ProblemPage from "./components/pages/ProblemPage";
 import ProfilePage from "./components/pages/ProfilePage";
+import { getAccessToken } from "./logic/auth/auth";
 
 function App() {
     const [pageType, setPageType] = useState(PageType.SignIn)
     const [chosenProblem, setChosenProblem] = useState<Problem | undefined>(undefined)
+
+    useEffect(() => {(async () => {
+        const accessToken = getAccessToken()
+        if (!accessToken) {
+            return
+        }
+
+        setPageType(PageType.ProblemsList)
+    })()}, [])
 
     let content = <></>
     if (pageType == PageType.SignIn) {

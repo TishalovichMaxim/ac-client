@@ -5,7 +5,7 @@ import { PageType } from "../page-type"
 import { ChosenProblemContext } from "../chosen-problem-context"
 
 function ProblemView(
-  props: { problem: Problem, }
+  props: { problem: Problem, key: number }
 ) {
   const [, setPageType] = useContext(PageTypeContext)
   const [, setChosenProblem] = useContext(ChosenProblemContext)
