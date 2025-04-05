@@ -2,11 +2,15 @@ import { useContext, useEffect, useState } from "react"
 import { ChosenProblemContext } from "../../chosen-problem-context"
 import Navbar from "../Navbar"
 import { onAppear, onCodeSubmit } from "../../logic/pages/problem-page"
+import { Submission } from "../../logic/submissions"
+import SubmissionsTable from "../SubmissionsTable"
 
 function ProblemPage() {
   const [chosenProblem, _] = useContext(ChosenProblemContext)
   const [code, setCode] = useState("aboba")
-  useEffect(onAppear, [])
+  const [submissions, setSubmissions] = useState<Submission[]>([])
+
+  useEffect(() => {onAppear(chosenProblem!.id, setSubmissions)}, [])
 
   return (
     <>
@@ -38,6 +42,7 @@ function ProblemPage() {
           Submit
         </button>
       </div>
+      <SubmissionsTable submissions={submissions} />
     </>
   )
 }
